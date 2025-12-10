@@ -8,7 +8,8 @@ if grep -qa container=lxc /proc/1/environ; then
     echo "Running inside an LXC container."
     is_lxc="y"
 elif [[ -f /etc/pve/.version ]]; then
-    echo "Running on a Proxmox host."
+	pveversion=pveversion | cut -d'/' -f2
+    echo "Running on a Proxmox $pveversion host."
     is_lxc="n"
 else
     echo "Running on a non-Proxmox, non-LXC system."
