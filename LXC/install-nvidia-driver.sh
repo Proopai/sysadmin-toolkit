@@ -6,10 +6,10 @@
 driver_base_url="https://download.nvidia.com/XFree86/Linux-x86_64"
 if grep -qa container=lxc /proc/1/environ; then
     echo "Running inside an LXC container."
-    $is_lxc="y"
+    is_lxc="y"
 elif [[ -f /etc/pve/.version ]]; then
     echo "Running on a Proxmox host."
-    $is_lxc="n"
+    is_lxc="n"
 else
     echo "Running on a non-Proxmox, non-LXC system."
     exit
