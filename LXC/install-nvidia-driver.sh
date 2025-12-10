@@ -4,7 +4,7 @@
 # Current version of script is only designed for Proxmox Environments or LXC Containers
 
 driver_base_url="https://download.nvidia.com/XFree86/Linux-x86_64"
-if grep -qa container=lxc /proc/1/environ; then
+if printenv | grep -qa container=lxc; then
     echo "Running inside an LXC container."
     is_lxc="y"
 elif [[ -f /etc/pve/.version ]]; then
