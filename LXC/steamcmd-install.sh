@@ -1,3 +1,4 @@
+#!/bin/bash
 # Update Base Apt Packages
 apt update
 apt upgrade
