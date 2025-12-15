@@ -1,10 +1,13 @@
-lxc.cgroup2.devices.allow: c 195:* rwm   # nvidia0, nvidiactl, nvidia-modeset
-lxc.cgroup2.devices.allow: c 234:* rwm   # nvidia-uvm, nvidia-uvm-tools
-lxc.cgroup2.devices.allow: c 237:* rwm   # nvidia-cap1, nvidia-cap2
-lxc.mount.entry: /dev/nvidia0 dev/nvidia0 none bind,optional,create=file
-lxc.mount.entry: /dev/nvidiactl dev/nvidiactl none bind,optional,create=file
-lxc.mount.entry: /dev/nvidia-modeset dev/nvidia-modeset none bind,optional,create=file
-lxc.mount.entry: /dev/nvidia-uvm dev/nvidia-uvm none bind,optional,create=file
-lxc.mount.entry: /dev/nvidia-uvm-tools dev/nvidia-uvm-tools none bind,optional,create=file
-lxc.mount.entry: /dev/nvidia-caps/nvidia-cap1 dev/nvidia-cap1 none bind,optional,create=file
-lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-cap2 none bind,optional,create=file
+# Add the following to the lxc conf file for your plex container.
+# On Proxmox this is /etc/pve/lxc/<CTID>.conf
+
+lxc.cgroup2.devices.allow: c 195:* rwm                                                        # nvidia0, nvidiactl, nvidia-modeset
+lxc.cgroup2.devices.allow: c 234:* rwm                                                        # nvidia-uvm, nvidia-uvm-tools
+lxc.cgroup2.devices.allow: c 237:* rwm                                                        # nvidia-cap1, nvidia-cap2
+lxc.mount.entry: /dev/nvidia0 dev/nvidia0 none bind,optional,create=file                      # nvidia0: Main GPU Device Node
+lxc.mount.entry: /dev/nvidiactl dev/nvidiactl none bind,optional,create=file                  # nvidiactl: NVIDIA control interface device
+lxc.mount.entry: /dev/nvidia-modeset dev/nvidia-modeset none bind,optional,create=file        # nvidia-modeset: Modeset device for display configuration
+lxc.mount.entry: /dev/nvidia-uvm dev/nvidia-uvm none bind,optional,create=file                # nvidia-uvm: Unified Virtual Memory (UVM) device
+lxc.mount.entry: /dev/nvidia-uvm-tools dev/nvidia-uvm-tools none bind,optional,create=file    # nvidia-uvm-tools: Auxiliary device for UVM management
+lxc.mount.entry: /dev/nvidia-caps/nvidia-cap1 dev/nvidia-cap1 none bind,optional,create=file  # nvidia-cap1: NVENC/NVDEC “capability” device
+lxc.mount.entry: /dev/nvidia-caps/nvidia-cap2 dev/nvidia-cap2 none bind,optional,create=file  # nvidia-cap2: NVENC/NVDEC “capability” device
