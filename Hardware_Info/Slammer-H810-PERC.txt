@@ -14,4 +14,9 @@ With ZFS, Recommended to Cap ZFS ARC Memory to 50% of System Memory
    - Follwup with a Reboot of the Node
  - Datasets within Pools are recommended to be configured, in the event you need to copy a dataset (such as Plex Media) to another Pool
    - can be accomplished using zfs snapshot and zfs send | zfs receive commands for onetime copies or tools like "zrepl" to setup automated syncs
+   - Media DataSets such as Plex Media Files can have primarycache setting set to metadata instead of all, reduces how much is cached in ZFS ARC Memory.
+   - VM Datasets should be configured with primarycache set to all and is recommended
+   - primarycache setting is set with the following command
+     - [Pool Level] zfs set primarycache=(all|metadata) PoolName
+     - [DataSet Level] zfs set primarycache=(all|metadata) PoolName/DataSetName
 
