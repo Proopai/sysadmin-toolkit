@@ -2,6 +2,7 @@ Slammer Supports: SAS or SATA Drives
  - Recommended to use only Enterprise Grade Drives (even Refurbished ones outside of MFG Warranty period)
 Slammer Backplane will limit to 6gbps per lane SAS-2 /SATA-III even if Drives are SAS-3 whose normal speed is 12Gbps
  - Drives will negotiate down to the slower speeds
+ - Can Negotiate Down to SAS-1 / SATA-I Speeds if drives do not support higher.
 H810 Controller Card is also limited to SAS-2/SATA-III (6gbps per lane)
 In passthrough mode, Size of Disks is not limited except by Max (Spin-up) Power Utilization (240W Max)
  - Except Slammer JBOD does not spin up all drives at the same time, it staggers spinup
