@@ -7,49 +7,50 @@ then
     apt update && apt install -y smartmontools
 fi
 
-echo "Checking SAS/SATA negotiated speed and size for all /dev/sd* disks..."
-printf "%-8s %-12s %-20s %-10s\n" "Disk" "Drive Type" "Link Speed" "Size"
+echo "Checking SAS/SATA version and negotiated speed for all /dev/sd* disks..."
+printf "%-8s %-12s %-25s %-10s\n" "Disk" "Drive Type" "Link Info" "Size"
 
-# Loop through all sd* devices
 for disk in /dev/sd[a-z]
 do
-    # Skip if not a block device
     [ -b "$disk" ] || continue
 
+    # Get disk size from lsblk
+    size_bytes=$(lsblk -b -dn -o SIZE "$disk")
+    if [ "$size_bytes" -ge 1099511627776 ]; then
+        size=$(echo "scale=2; $size_bytes/1099511627776" | bc)TB
+    elif [ "$size_bytes" -ge 1073741824 ]; then
+        size=$(echo "scale=2; $size_bytes/1073741824" | bc)GB
+    else
+        size=$(echo "scale=2; $size_bytes/1048576" | bc)MB
+    fi
+
+    # Default values
     drive_type="Unknown"
-    link_speed="Unknown"
+    link_info="Unknown"
 
-    # Get disk size in human-readable format
-    size=$(lsblk -b -dn -o SIZE "$disk")
-    # Convert bytes to TB/GiB for readability
-    if [ "$size" -ge 1099511627776 ]; then
-        size=$(echo "scale=2; $size/1099511627776" | bc)TB
-    elif [ "$size" -ge 1073741824 ]; then
-        size=$(echo "scale=2; $size/1073741824" | bc)GB
-    else
-        size=$(echo "scale=2; $size/1048576" | bc)MB
-    fi
+    # smartctl interface info
+    smartctl_output=$(smartctl -i "$disk" 2>/dev/null)
 
-    # Run smartctl to get SAS Version / Negotiated link rate
-    smartctl_output=$(smartctl -a "$disk" 2>/dev/null)
+    # Check for SAS
+    sas_ver=$(echo "$smartctl_output" | grep -i "SAS Version" | awk -F: '{print $2}' | xargs)
+    sas_rate=$(echo "$smartctl_output" | grep -i "Negotiated Link Rate" | awk -F: '{print $2}' | xargs)
 
-    sas_version=$(echo "$smartctl_output" | grep -i 'SAS Version')
-    sas_link=$(echo "$smartctl_output" | grep -i 'Negotiated link rate')
-
-    # Check for SATA info if SAS info missing
-    if [ -z "$sas_version" ]; then
-        # Look for SATA speed in smartctl info
-        sata_speed=$(echo "$smartctl_output" | grep -i 'SATA Version is' | awk -F: '{print $2}' | xargs)
-        if [ -n "$sata_speed" ]; then
-            drive_type="SATA"
-            link_speed="$sata_speed"
-        fi
-    else
+    if [ -n "$sas_ver" ]; then
         drive_type="SAS"
-        link_speed=$(echo "$sas_link" | awk -F: '{print $2}' | xargs)
+        link_info="$sas_ver $sas_rate"
+    else
+        # Check for SATA
+        sata_ver=$(echo "$smartctl_output" | grep -i "SATA Version is" | awk -F: '{print $2}' | xargs | sed 's/,//')
+        sata_curr=$(echo "$smartctl_output" | grep -i "SATA Version is" | grep -o "current [0-9.]*" | awk '{print $2 " Gb/s"}')
+        if [ -n "$sata_ver" ]; then
+            drive_type="SATA"
+            link_info="$sata_ver $sata_curr"
+            # Strip "(current ...)" if smartctl prints it
+            link_info=$(echo "$link_info" | sed 's/(current.*//')
+        fi
     fi
 
-    printf "%-8s %-12s %-20s %-10s\n" "$disk" "$drive_type" "$link_speed" "$size"
+    printf "%-8s %-12s %-25s %-10s\n" "$disk" "$drive_type" "$link_info" "$size"
 
 done
 
