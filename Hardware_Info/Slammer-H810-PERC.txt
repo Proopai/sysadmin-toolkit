@@ -1,0 +1,16 @@
+Slammer Supports: SAS or SATA Drives
+ - Recommended to use only Enterprise Grade Drives (even Refurbished ones outside of MFG Warranty period)
+Slammer Backplane will limit to 6gbps per lane SAS-2 /SATA-III even if Drives are SAS-3 whose normal speed is 12Gbps
+ - Drives will negotiate down to the slower speeds
+H810 Controller Card is also limited to SAS-2/SATA-III (6gbps per lane)
+In passthrough mode, Size of Disks is not limited except by Max (Spin-up) Power Utilization (240W Max)
+ - Except Slammer JBOD does not spin up all drives at the same time, it staggers spinup
+ - SAS Drives typically handle power issues better, but do require a little more power 1-3W extra per drive for active use (3-5W extra for spin up)
+With ZFS, Recommended to Cap ZFS ARC Memory to 50% of System Memory
+ - If Memory is needed by System or LXC/VMs ZFS ARC will release it. ARC is Low Priority but can and will use up to MAX Limit set when nothing else needs it.
+ - ARC Memory can be limited to any value you specify (for exampel the below command sets it to 96GB)
+   - echo 96G > /sys/module/zfs/parameters/zfs_arc_max
+   - Follwup with a Reboot of the Node
+ - Datasets within Pools are recommended to be configured, in the event you need to copy a dataset (such as Plex Media) to another Pool
+   - can be accomplished using zfs snapshot and zfs send | zfs receive commands for onetime copies or tools like "zrepl" to setup automated syncs
+
