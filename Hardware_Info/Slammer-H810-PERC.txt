@@ -1,3 +1,11 @@
+Slammer Info:
+ - Manufacturer: DELL
+ - Model: MD1000
+Raid Card:
+ - Manufacturer: DELL
+ - Model: PowerEdge PERC H810 Internal/External
+ - Interface: PCIe 2.0
+ - Flashed into IT/Passthrough Mode
 Slammer Supports: SAS or SATA Drives
  - Recommended to use only Enterprise Grade Drives (even Refurbished ones outside of MFG Warranty period)
 Slammer Backplane will limit to 6gbps per lane SAS-2 /SATA-III even if Drives are SAS-3 whose normal speed is 12Gbps
