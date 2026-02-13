@@ -1,1 +1,9 @@
 curl -LsSf https://repo.plex.tv/scripts/setupRepo.sh | sudo bash
+
+# Run the abov commadn if you encounter the following Error
+<#
+Sub-process /usr/bin/sqv returned an error code (1), error message is: Signing key on CD665CBA0E2F88B7373F7CB997203C7B3ADCA79D is not bound:            
+No binding signature at time 2025-09-22T18:33:03Z
+because: Policy rejected non-revocation signature (PositiveCertification) requiring second pre-image resistance
+because: SHA1 is not considered secure since 2026-02-01T00:00:00
+#>
