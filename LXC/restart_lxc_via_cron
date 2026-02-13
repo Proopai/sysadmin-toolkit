@@ -1,0 +1,2 @@
+# Restart LXC Container 102 Daily at 4 AM
+0 4 * * * /bin/bash -c 'pvesh create /nodes/$(hostname)/lxc/102/status/reboot' >/dev/null 2>&1
