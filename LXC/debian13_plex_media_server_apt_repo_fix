@@ -1,0 +1,1 @@
+curl -LsSf https://repo.plex.tv/scripts/setupRepo.sh | sudo bash⁩
