@@ -36,7 +36,7 @@ if dpkg --compare-versions "$latest_driver_version" gt "$current_driver_version"
         kernel_version=$(uname -r)
         headers="proxmox-headers-$kernel_version"
         apt install $headers -y
-	if dpkg -s dkms 2>/dev/null | grep -q "Status: install ok installed"; then
+	    if dpkg -s dkms 2>/dev/null | grep -q "Status: install ok installed"; then
     	    echo "DKMS is installed, Installing Driver"
         else
             echo "DKMS is NOT installed, Installing DKMS and Driver"
