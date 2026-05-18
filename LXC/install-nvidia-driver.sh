@@ -16,7 +16,7 @@ else
     exit
 fi
 
-latest_driver_info="$(curl -s "${driver_base_url}/latest.txt")"
+latest_driver_info="580.105.08 580.105.08/NVIDIA-Linux-x86_64-580.105.08.run"
 latest_driver_version="$(echo $latest_driver_info | cut -d' ' -f1)"
 latest_driver_path="$(echo $latest_driver_info | cut -d' ' -f2)"
 latest_driver_url="$(echo $driver_base_url/$latest_driver_path)"
