@@ -16,11 +16,11 @@ else
     exit
 fi
 
-latest_driver_info="580.105.08 580.105.08/NVIDIA-Linux-x86_64-580.105.08.run"
+latest_driver_info="580.159.03 580.159.03/NVIDIA-Linux-x86_64-580.159.03.run"
 latest_driver_version="$(echo $latest_driver_info | cut -d' ' -f1)"
 latest_driver_path="$(echo $latest_driver_info | cut -d' ' -f2)"
 latest_driver_url="$(echo $driver_base_url/$latest_driver_path)"
-current_driver_version="$(nvidia-smi --query-gpu=driver_version --format=csv,noheader)"
+current_driver_version="$(nvidia-smi --query-gpu=driver_version --format=csv,noheader 2>/dev/null)" || current_driver_version="0.0.0"
 
 if dpkg --compare-versions "$latest_driver_version" gt "$current_driver_version"; then
     echo "New Driver Available"  # latest version is newer
