@@ -30,7 +30,7 @@ if dpkg --compare-versions "$latest_driver_version" gt "$current_driver_version"
     if [[ "$is_lxc" == "y" ]]; then
         # Running inside an LXC Container
         echo "Running inside an LXC Container"
-        /tmp/nvidia_driver_$latest_driver_version.run --no-kernel-module --silent --allow-installation-with-running-driver --no-x-check
+        /tmp/nvidia_driver_$latest_driver_version.run --no-kernel-module --silent --allow-installation-with-running-driver --no-x-check --no-opengl-files --no-systemd
     else
         # Running on Proxmox Host
         echo "Running on Proxmox Host"
